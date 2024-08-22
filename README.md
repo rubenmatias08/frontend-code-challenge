@@ -34,7 +34,7 @@ Delete user</br>
 DELETE /users/:id
 
 Update user</br>
-PUT /user/:id/edit
+PUT /user/:id/edit</br>
 Expected body: { fullName: string, email: string }
 
 Get orders by user id</br>
