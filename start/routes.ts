@@ -17,7 +17,11 @@ router.get('/', async () => {
   }
 })
 
-router.resource('users', UsersController)
+router.get('users', [UsersController, 'index'])
+router.post('users', [UsersController, 'store'])
+router.delete('users/:id', [UsersController, 'destroy'])
+router.get('user/:id', [UsersController, 'show'])
+router.put('user/:id/edit', [UsersController, 'edit'])
 router.get('orders/:id', [OrdersController, 'index'])
 router.post('orders', [OrdersController, 'store'])
 router.delete('orders/:id', [OrdersController, 'destroy'])

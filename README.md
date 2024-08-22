@@ -33,6 +33,10 @@ GET /users/:id
 Delete user</br>
 DELETE /users/:id
 
+Update user</br>
+PUT /user/:id/edit
+Expected body: { fullName: string, email: string }
+
 Get orders by user id</br>
 GET /orders/:id
 

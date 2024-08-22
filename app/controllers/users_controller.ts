@@ -1,5 +1,6 @@
 import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 
 export default class UsersController {
   /**
@@ -34,14 +35,23 @@ export default class UsersController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    const user = await User.find(1)
+    const user = await db.from('users').where('id', params.id).first()
+    delete user.password
     return user
   }
 
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params, request }: HttpContext) {
+    const formData = request.body()
+    const user = await User.findOrFail(params?.id)
+    user.fullName = formData.fullName
+    user.email = formData.email
+    user.password = formData.password
+    await user.save()
+    return user
+  }
 
   /**
    * Handle form submission for the edit action
@@ -51,10 +61,12 @@ export default class UsersController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {
-    const user = await User.find(1)
+  async destroy({ params, response }: HttpContext) {
+    const user = await User.find(params.id)
     if (user) {
       await user.delete()
     }
+
+    response.status(204)
   }
 }
