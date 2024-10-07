@@ -7,16 +7,14 @@
         <v-btn type="submit" color="success">Register User</v-btn>
         <v-alert v-if="userMessage" type="success" dismissible>{{ userMessage }}</v-alert>
         <v-divider></v-divider>
-        
         <v-select
           v-model="selectedUser"
           :items="users"
-          item-text="fullName" 
+          item-text="name"
           item-value="id"
           label="Select User"
           required
         ></v-select>
-  
         <v-text-field v-model="order" label="Order" required></v-text-field>
         <v-btn @click="registerOrder" color="success">Register Order</v-btn>
       </v-form>
@@ -32,12 +30,12 @@
         password: '',
         order: '',
         selectedUser: null,
-        users: [],  // This will store the list of users
-        userMessage: ''
-      }
+        users: [],
+        userMessage: '',
+      };
     },
     mounted() {
-      this.fetchUsers();  // Fetch users when the component is mounted
+      this.fetchUsers();
     },
     methods: {
       async fetchUsers() {
@@ -48,41 +46,36 @@
         const response = await fetch('http://localhost:3333/users', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ fullName: this.name, email: this.email, password: this.password })  // Send the full name
+          body: JSON.stringify({ name: this.name, email: this.email, password: this.password }),
         });
         if (response.ok) {
           this.userMessage = 'Successfully registered';
-          this.name = '';
-          this.email = '';
-          this.password = '';
-          await this.fetchUsers();  // Refresh users after registration
           setTimeout(() => {
             this.userMessage = '';
             this.$router.push({ name: 'Database' });
-          }, 2000);
+          }, 120000);
         }
       },
       async registerOrder() {
         const response = await fetch('http://localhost:3333/orders', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ userId: this.selectedUser, order: this.order })  // Register order with selected user
+          body: JSON.stringify({ userId: this.selectedUser, order: this.order }),
         });
         if (response.ok) {
           this.userMessage = 'Successfully registered order';
-          this.order = '';
           setTimeout(() => {
             this.userMessage = '';
             this.$router.push({ name: 'Database' });
-          }, 2000);
+          }, 120000);
         }
-      }
-    }
-  }
+      },
+    },
+  };
   </script>
   
   <style scoped>

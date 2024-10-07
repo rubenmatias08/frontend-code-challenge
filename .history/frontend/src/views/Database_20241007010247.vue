@@ -47,7 +47,7 @@
         return this.users.map(user => {
           return {
             ...user,
-            orders: user.orders || [] 
+            orders: user.orders || []  // Make sure orders are included
           }
         });
       }
