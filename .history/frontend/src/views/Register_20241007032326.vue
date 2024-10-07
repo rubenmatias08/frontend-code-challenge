@@ -51,7 +51,7 @@
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ fullName: this.name, email: this.email, password: this.password })
+          body: JSON.stringify({ fullName: [this.name], email: this.email, password: this.password }) //aqui!
         });
         if (response.ok) {
           this.userMessage = 'Successfully registered';

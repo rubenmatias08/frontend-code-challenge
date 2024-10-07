@@ -71,7 +71,7 @@
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ userId: this.selectedUser, order: this.order })  
+          body: JSON.stringify({ userId: this.user, order: this.order })  
         });
         if (response.ok) {
           this.userMessage = 'Successfully registered order';
