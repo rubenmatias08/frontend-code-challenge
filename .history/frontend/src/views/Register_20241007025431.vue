@@ -11,12 +11,11 @@
         <v-select
           v-model="selectedUser"
           :items="users"
-          item-text="fullName"
+          item-text="{fullName}" 
           item-value="id"
           label="Select User"
-          required>
-       </v-select>
-
+          required
+        ></v-select>
   
         <v-text-field v-model="order" label="Order" required></v-text-field>
         <v-btn @click="registerOrder" color="success">Register Order</v-btn>
@@ -58,7 +57,7 @@
           this.name = '';
           this.email = '';
           this.password = '';
-          await this.fetchUsers();
+          await this.fetchUsers();  // Refresh users after registration
           setTimeout(() => {
             this.userMessage = '';
             this.$router.push({ name: 'Database' });
@@ -71,7 +70,7 @@
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ userId: this.selectedUser, order: this.order })  
+          body: JSON.stringify({ userId: this.selectedUser, order: this.order })  // Register order with selected user
         });
         if (response.ok) {
           this.userMessage = 'Successfully registered order';

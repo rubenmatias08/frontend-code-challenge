@@ -9,7 +9,7 @@
         <v-divider></v-divider>
         
         <v-select
-          v-model="selectedUser"
+          :v-model="selectedUser"
           :items="users"
           item-text="fullName"
           item-value="id"

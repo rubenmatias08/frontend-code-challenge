@@ -11,7 +11,7 @@
         <v-select
           v-model="selectedUser"
           :items="users"
-          item-text="fullName"
+          item-text="email"
           item-value="id"
           label="Select User"
           required>

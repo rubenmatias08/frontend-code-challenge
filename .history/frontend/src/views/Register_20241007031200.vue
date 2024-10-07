@@ -10,7 +10,7 @@
         
         <v-select
           v-model="selectedUser"
-          :items="users"
+          :items="users.name"
           item-text="fullName"
           item-value="id"
           label="Select User"

@@ -14,9 +14,8 @@
           item-text="fullName"
           item-value="id"
           label="Select User"
-          required>
-       </v-select>
-
+          required
+        ></v-select>
   
         <v-text-field v-model="order" label="Order" required></v-text-field>
         <v-btn @click="registerOrder" color="success">Register Order</v-btn>

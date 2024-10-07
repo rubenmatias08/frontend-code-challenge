@@ -10,6 +10,7 @@
         </v-btn>
       </template>
     </v-data-table>
+
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -48,7 +49,6 @@ export default {
     this.fetchUsers();
   },
   methods: {
-
     async fetchUsers() {
       try {
         const response = await fetch('http://localhost:3333/users');
@@ -71,12 +71,8 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            fullName: this.editedUser.fullName,
-            email: this.editedUser.email
-          }),
+          body: JSON.stringify(this.editedUser)
         });
-
         if (!response.ok) {
           throw new Error('Failed to update user');
         }

@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       dialog: false,
-      users: [],
+      users: [this.users],
       editedUser: {},
       headers: [
         { text: 'ID', value: 'id' },

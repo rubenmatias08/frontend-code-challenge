@@ -35,6 +35,7 @@ export default {
     return {
       dialog: false,
       users: [],
+      order: [],
       editedUser: {},
       headers: [
         { text: 'ID', value: 'id' },

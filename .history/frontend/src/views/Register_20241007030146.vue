@@ -8,15 +8,15 @@
         <v-alert v-if="userMessage" type="success" dismissible>{{ userMessage }}</v-alert>
         <v-divider></v-divider>
         
+  
         <v-select
           v-model="selectedUser"
-          :items="users"
+          :items="users.id"
           item-text="fullName"
           item-value="id"
           label="Select User"
-          required>
-       </v-select>
-
+          required
+        ></v-select>
   
         <v-text-field v-model="order" label="Order" required></v-text-field>
         <v-btn @click="registerOrder" color="success">Register Order</v-btn>

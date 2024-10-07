@@ -42,6 +42,7 @@ export default {
         { text: 'Email', value: 'email' },
         { text: 'Actions', value: 'actions', sortable: false }
       ]
+      order: [],
     };
   },
   mounted() {

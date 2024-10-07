@@ -9,13 +9,13 @@
         <v-divider></v-divider>
         
         <v-select
-          v-model="selectedUser"
-          :items="users"
-          item-text="fullName"
-          item-value="id"
-          label="Select User"
-          required>
-       </v-select>
+  v-model="selectedUser"
+  :items="userOptions"
+  item-text="text"
+  item-value="value"
+  label="Select User"
+  required>
+</v-select>
 
   
         <v-text-field v-model="order" label="Order" required></v-text-field>

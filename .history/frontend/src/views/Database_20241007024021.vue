@@ -1,15 +1,20 @@
 <template>
   <v-container>
+    <!-- Users Table -->
     <v-data-table :headers="headers" :items="users" item-value="id" class="elevation-1">
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:item.actions.="{ item }">
+        <!-- Edit button -->
         <v-btn icon @click="editUser(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
+        <!-- Delete button -->
         <v-btn icon @click="deleteUser(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
     </v-data-table>
+
+    <!-- Edit User Dialog -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -35,7 +40,7 @@ export default {
     return {
       dialog: false,
       users: [],
-      editedUser: {},
+      editedUser: {},  // Stores the selected user for editing
       headers: [
         { text: 'ID', value: 'id' },
         { text: 'Name', value: 'fullName' },
@@ -45,10 +50,10 @@ export default {
     };
   },
   mounted() {
-    this.fetchUsers();
+    this.fetchUsers();  // Fetch users when component is mounted
   },
   methods: {
-
+    // Fetch all users
     async fetchUsers() {
       try {
         const response = await fetch('http://localhost:3333/users');
@@ -57,15 +62,19 @@ export default {
         console.error('Error fetching users:', error);
       }
     },
+    // Open dialog to edit a user
     editUser(user) {
-      this.editedUser = { ...user };
-      this.dialog = true;
+      this.editedUser = { ...user };  // Clone the user object for editing
+      this.dialog = true;  // Open the dialog
     },
+    // Close the dialog
     closeDialog() {
       this.dialog = false;
     },
+    // Save the edited user data
     async saveUser() {
       try {
+        // Send PUT request to update user data
         const response = await fetch(`http://localhost:3333/users/${this.editedUser.id}`, {
           method: 'PUT',
           headers: {
@@ -80,12 +89,15 @@ export default {
         if (!response.ok) {
           throw new Error('Failed to update user');
         }
+
+        // Close dialog and refresh users list
         this.dialog = false;
         await this.fetchUsers();
       } catch (error) {
         console.error('Error updating user:', error);
       }
     },
+    // Delete user
     async deleteUser(user) {
       try {
         const response = await fetch(`http://localhost:3333/users/${user.id}`, {
@@ -94,7 +106,7 @@ export default {
         if (!response.ok) {
           throw new Error('Failed to delete user');
         }
-        await this.fetchUsers();
+        await this.fetchUsers();  // Refresh users after deletion
       } catch (error) {
         console.error('Error deleting user:', error);
       }
