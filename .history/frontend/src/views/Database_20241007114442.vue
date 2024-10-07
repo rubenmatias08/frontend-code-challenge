@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-text-field v-model="searchQuery" label="Search Users" @input="searchUsers"></v-text-field>
+    <v-text-field v-model="searchQuery" label="Search Users"></v-text-field>
     <v-data-table :headers="headers" :items="filteredUsers" item-value="id" class="elevation-1">
       <template v-slot:item.actions="{ item }">
         <v-btn icon @click="editUser(item)">
@@ -11,7 +11,6 @@
         </v-btn>
       </template>
     </v-data-table>
-
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -33,17 +32,15 @@
 </template>
 
 <script>
-import { UserService } from '@/services/UserService';
-
 export default {
   data() {
     return {
       dialog: false,
       users: [],
-      filteredUsers: [],
+      orders: [],
+      searchQuery: '',
       editedUser: {},
       editedOrder: '',
-      searchQuery: '',
       headers: [
         { text: 'ID', value: 'id' },
         { text: 'Name', value: 'fullName' },
@@ -53,43 +50,75 @@ export default {
       ]
     };
   },
+  computed: {
+    filteredUsers() {
+      return this.users.filter(user => {
+        return (
+          user.fullName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          user.email.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      });
+    }
+  },
   mounted() {
     this.fetchUsers();
   },
   methods: {
     async fetchUsers() {
-      const response = await UserService.fetchUsers();
-      this.users = response;
-      this.filteredUsers = response;
-    },
-    searchUsers() {
-      this.filteredUsers = this.users.filter(user =>
-        user.fullName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      try {
+        const response = await fetch('http://localhost:3333/users');
+        const data = await response.json();
+        this.users = data.map(user => ({
+          ...user,
+          orders: user.orders.join(', ')
+        }));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
     },
     editUser(user) {
       this.editedUser = { ...user };
-      this.editedOrder = user.orders || '';
+      this.editedOrder = user.orders;
       this.dialog = true;
     },
     closeDialog() {
       this.dialog = false;
     },
     async saveUser() {
-      await UserService.updateUser(this.editedUser.id, {
-        fullName: this.editedUser.fullName,
-        email: this.editedUser.email,
-      });
-      await UserService.updateOrder(this.editedUser.id, {
-        order: this.editedOrder,
-      });
-      this.dialog = false;
-      this.fetchUsers();
+      try {
+        const response = await fetch(`http://localhost:3333/users/${this.editedUser.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fullName: this.editedUser.fullName,
+            email: this.editedUser.email,
+            orders: this.editedOrder.split(', ')
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update user');
+        }
+        this.dialog = false;
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
     },
     async deleteUser(user) {
-      await UserService.deleteUser(user.id);
-      this.fetchUsers();
+      try {
+        const response = await fetch(`http://localhost:3333/users/${user.id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete user');
+        }
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
     }
   }
 };
@@ -97,16 +126,13 @@ export default {
 
 <style scoped>
 v-container {
-  background-color: #f5f5f5;
-  padding: 20px;
+  background-image: url('/path-to-your-background-image.jpg');
+  background-size: cover;
+  padding-top: 50px;
 }
 
-.v-data-table-header th {
-  background-color: #2196F3;
-  color: white;
-}
-
-.v-dialog .v-card {
-  background-color: #fff;
+.v-data-table {
+  background-color: white;
+  border-radius: 8px;
 }
 </style>

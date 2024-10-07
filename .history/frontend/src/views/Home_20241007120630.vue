@@ -13,19 +13,39 @@
 export default {
   methods: {
     goToRegister() {
-      this.$router.push({ name: 'Register' })
+      this.$router.push({ name: 'Register' });
     },
     goToDatabase() {
-      this.$router.push({ name: 'Database' })
-    }
-  }
-}
+      this.$router.push({ name: 'Database' });
+    },
+  },
+};
 </script>
 
 <style scoped>
-v-container {
-  
+body {
+  background-image: url('@/assets/colorful-background.png');
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
+}
+
+.v-app-bar {
+  background-color: #2b2b2b !important;
+  color: white !important;
+}
+
+.v-btn {
+  background-color: #1f1f1f !important;
+  color: #fff !important;
+}
+
+.v-btn:hover {
+  background-color: #3d3d3d !important;
+}
+
+.v-footer {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
 }
 </style>

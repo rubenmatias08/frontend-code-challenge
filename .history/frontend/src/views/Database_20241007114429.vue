@@ -1,0 +1,138 @@
+<template>
+  <v-container>
+    <v-text-field v-model="searchQuery" label="Search Users"></v-text-field>
+    <v-data-table :headers="headers" :items="filteredUsers" item-value="id" class="elevation-1">
+      <template v-slot:item.actions="{ item }">
+        <v-btn icon @click="editUser(item)">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn icon @click="deleteUser(item)">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </template>
+    </v-data-table>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Edit User</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field v-model="editedUser.fullName" label="Name"></v-text-field>
+          <v-text-field v-model="editedUser.email" label="Email"></v-text-field>
+          <v-text-field v-model="editedOrder" label="Order"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDialog">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="saveUser">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      dialog: false,
+      users: [],
+      orders: [],
+      searchQuery: '',
+      editedUser: {},
+      editedOrder: '',
+      headers: [
+        { text: 'ID', value: 'id' },
+        { text: 'Name', value: 'fullName' },
+        { text: 'Email', value: 'email' },
+        { text: 'Orders', value: 'orders' },
+        { text: 'Actions', value: 'actions', sortable: false }
+      ]
+    };
+  },
+  computed: {
+    filteredUsers() {
+      return this.users.filter(user => {
+        return (
+          user.fullName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          user.email.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      });
+    }
+  },
+  mounted() {
+    this.fetchUsers();
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+        const response = await fetch('http://localhost:3333/users');
+        const data = await response.json();
+        this.users = data.map(user => ({
+          ...user,
+          orders: user.orders.join(', ') // Add orders to users
+        }));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    },
+    editUser(user) {
+      this.editedUser = { ...user };
+      this.editedOrder = user.orders;
+      this.dialog = true;
+    },
+    closeDialog() {
+      this.dialog = false;
+    },
+    async saveUser() {
+      try {
+        const response = await fetch(`http://localhost:3333/users/${this.editedUser.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fullName: this.editedUser.fullName,
+            email: this.editedUser.email,
+            orders: this.editedOrder.split(', ')
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update user');
+        }
+        this.dialog = false;
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
+    },
+    async deleteUser(user) {
+      try {
+        const response = await fetch(`http://localhost:3333/users/${user.id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete user');
+        }
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+v-container {
+  background-image: url('/path-to-your-background-image.jpg');
+  background-size: cover;
+  padding-top: 50px;
+}
+
+.v-data-table {
+  background-color: white;
+  border-radius: 8px;
+}
+</style>

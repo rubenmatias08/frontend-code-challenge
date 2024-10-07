@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container class="background">
     <v-row align="center" justify="center">
       <v-col class="text-center">
         <v-btn @click="goToRegister" color="primary" class="mx-4">Register</v-btn>
@@ -23,9 +23,10 @@ export default {
 </script>
 
 <style scoped>
-v-container {
-  
+.background {
   background-size: cover;
   background-position: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 </style>

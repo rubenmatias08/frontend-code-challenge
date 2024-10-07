@@ -24,7 +24,7 @@ export default {
 
 <style scoped>
 v-container {
-  
+  background-image: url('/path/to/background-image.jpg');
   background-size: cover;
   background-position: center;
 }
