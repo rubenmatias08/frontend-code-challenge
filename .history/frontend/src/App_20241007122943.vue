@@ -26,13 +26,14 @@ export default {
 
 <style scoped>
 .v-app-bar {
-  background: linear-gradient(to right,#02AABD, #00CDAC);
-  color: #ffffff;
+  background: linear-gradient(to right, #1976D2, #64B5F6);
+  transition: background 0.5s ease;
 }
 
 .v-footer {
-  background: linear-gradient(to right, #007B74, #00CDAC);
-  color: #ffffff;
+  background: linear-gradient(to right, #424242, #757575);
+  color: white;
+  transition: background 0.5s ease;
 }
 </style>
 

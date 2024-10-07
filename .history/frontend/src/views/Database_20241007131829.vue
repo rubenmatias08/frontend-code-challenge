@@ -3,11 +3,11 @@
     <v-text-field v-model="searchQuery" label="Search Users" @input="searchUsers"></v-text-field>
     <v-data-table :headers="headers" :items="filteredUsers" item-value="id" class="elevation-1">
       <template v-slot:item.actions="{ item }">
-        <v-btn @click="editUser(item)" text class="action-button">
-          <v-icon left>mdi-pencil</v-icon>
+        <v-btn icon @click="editUser(item)">
+          <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn @click="deleteUser(item)" text class="action-button">
-          <v-icon left>mdi-delete</v-icon>
+        <v-btn icon @click="deleteUser(item)">
+          <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
     </v-data-table>
@@ -45,6 +45,7 @@ export default {
       editedOrder: '',
       searchQuery: '',
       headers: [
+        { text: 'ID', value: 'id' },
         { text: 'Name', value: 'fullName' },
         { text: 'Email', value: 'email' },
         { text: 'Orders', value: 'orders' },
@@ -58,8 +59,11 @@ export default {
   methods: {
     async fetchUsers() {
       const response = await UserService.fetchUsers();
-      this.users = response;
-      this.filteredUsers = response;
+      this.users = response.map(user => ({
+        ...user,
+        orders: user.orders || 'No Orders' // Ensure orders are displayed
+      }));
+      this.filteredUsers = this.users;
     },
     searchUsers() {
       this.filteredUsers = this.users.filter(user =>
@@ -107,9 +111,5 @@ v-container {
 
 .v-dialog .v-card {
   background-color: #fff;
-}
-
-.action-button {
-  margin-right: 4px; /* Adjust spacing as needed */
 }
 </style>

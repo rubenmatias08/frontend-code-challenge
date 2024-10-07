@@ -54,7 +54,7 @@ export default {
 .quote {
   font-family: 'Georgia', serif; 
   font-size: 1.5em; 
-  color: #ffffff; 
+  color: #333; 
   text-align: center; 
   line-height: 1.5;
 }

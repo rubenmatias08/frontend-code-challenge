@@ -8,6 +8,7 @@
       <v-alert v-if="userMessage" type="success" dismissible>{{ userMessage }}</v-alert>
       <v-divider></v-divider>
 
+      <!-- Fixed v-select to display fullName correctly -->
       <v-select
         v-model="selectedUser"
         :items="users"
@@ -51,7 +52,7 @@ export default {
       }
     },
     getUserFullName(user) {
-      return user.fullName || 'Unknown'; 
+      return user?.fullName || 'Unknown';
     },
     async registerUser() {
       try {
@@ -66,7 +67,7 @@ export default {
           this.name = '';
           this.email = '';
           this.password = '';
-          await this.fetchUsers(); 
+          await this.fetchUsers(); // Refresh users
           setTimeout(() => {
             this.userMessage = '';
             this.$router.push({ name: 'Database' });

@@ -3,11 +3,13 @@
     <v-text-field v-model="searchQuery" label="Search Users" @input="searchUsers"></v-text-field>
     <v-data-table :headers="headers" :items="filteredUsers" item-value="id" class="elevation-1">
       <template v-slot:item.actions="{ item }">
-        <v-btn @click="editUser(item)" text class="action-button">
+        <v-btn @click="editUser(item)" color="blue" text>
           <v-icon left>mdi-pencil</v-icon>
+          Edit
         </v-btn>
-        <v-btn @click="deleteUser(item)" text class="action-button">
+        <v-btn @click="deleteUser(item)" color="red" text>
           <v-icon left>mdi-delete</v-icon>
+          Delete
         </v-btn>
       </template>
     </v-data-table>
@@ -107,9 +109,5 @@ v-container {
 
 .v-dialog .v-card {
   background-color: #fff;
-}
-
-.action-button {
-  margin-right: 4px; /* Adjust spacing as needed */
 }
 </style>

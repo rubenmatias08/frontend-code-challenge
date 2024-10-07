@@ -11,7 +11,8 @@
     <v-row>
       <v-col class="text-center">
         <div class="quote-container">
-          <p class="quote">"Talent is not defined by credentials, and credentials is not defined by talent"</p>
+          <img src="@/assets/hansecom-logo.png" alt="HanseComLogo" class="logo" />
+          <p class="quote">"Success usually comes to those who are too busy to be looking for it."</p>
         </div>
       </v-col>
     </v-row>
@@ -32,6 +33,12 @@ export default {
 </script>
 
 <style scoped>
+.logo {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
 .main-container {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
@@ -41,25 +48,16 @@ export default {
 
 .quote-container {
   margin-top: 20px;
-  padding: 40px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 2px solid #ccc;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  max-width: 600px; 
-  margin-left: auto; 
-  margin-right: auto; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .quote {
-  font-family: 'Georgia', serif; 
-  font-size: 1.5em; 
-  color: #ffffff; 
-  text-align: center; 
-  line-height: 1.5;
-}
-
-.quote-container {
-  background: linear-gradient(to right,#02AABD, #00CDAC)
+  font-family: 'Courier New', Courier, monospace; /* Change this to your desired font */
+  font-size: 1.2em;
+  color: #333; /* Adjust color to match your theme */
+  margin-top: 10px;
 }
 </style>

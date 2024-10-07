@@ -51,7 +51,7 @@ export default {
       }
     },
     getUserFullName(user) {
-      return user.fullName || 'Unknown'; 
+      return user?.fullName || 'Unknown';
     },
     async registerUser() {
       try {
@@ -66,7 +66,7 @@ export default {
           this.name = '';
           this.email = '';
           this.password = '';
-          await this.fetchUsers(); 
+          await this.fetchUsers(); // Refresh users
           setTimeout(() => {
             this.userMessage = '';
             this.$router.push({ name: 'Database' });

@@ -31,8 +31,8 @@ export default {
 }
 
 .v-footer {
-  background: linear-gradient(to right, #007B74, #00CDAC);
-  color: #ffffff;
+  background: linear-gradient(to right,#0a970a, #5ff42d);
+  color: white;
 }
 </style>
 

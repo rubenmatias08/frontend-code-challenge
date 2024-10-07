@@ -11,7 +11,7 @@
       <v-select
         v-model="selectedUser"
         :items="users"
-        :item-text="getUserFullName"
+        item-text="fullName"  <!-- Changed this line -->
         item-value="id"
         label="Select User"
         required>
@@ -50,9 +50,6 @@ export default {
         console.error('Error fetching users:', error);
       }
     },
-    getUserFullName(user) {
-      return user.fullName || 'Unknown'; 
-    },
     async registerUser() {
       try {
         const newUser = {
@@ -66,7 +63,7 @@ export default {
           this.name = '';
           this.email = '';
           this.password = '';
-          await this.fetchUsers(); 
+          await this.fetchUsers(); // Refresh users
           setTimeout(() => {
             this.userMessage = '';
             this.$router.push({ name: 'Database' });
