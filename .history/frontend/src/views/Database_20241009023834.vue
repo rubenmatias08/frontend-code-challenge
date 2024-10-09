@@ -9,6 +9,9 @@
         <v-btn icon @click="deleteUser(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
+        <v-btn icon @click="deleteUserOrders(item)">
+          <v-icon>mdi-delete-circle</v-icon>
+        </v-btn>
       </template>
     </v-data-table>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -40,9 +43,9 @@ export default {
       search: '',
       filteredUsers: [],
       headers: [
+        { text: 'ID', value: 'id' },
         { text: 'Name', value: 'fullName' },
         { text: 'Email', value: 'email' },
-        { text: 'Orders', value: 'orders' },
         { text: 'Actions', value: 'actions', sortable: false }
       ]
     };
@@ -108,6 +111,19 @@ export default {
         await this.fetchUsers();
       } catch (error) {
         console.error('Error deleting user:', error);
+      }
+    },
+    async deleteUserOrders(user) {
+      try {
+        const response = await fetch(`http://localhost:3333/orders/${user.id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete user orders');
+        }
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error deleting user orders:', error);
       }
     }
   }

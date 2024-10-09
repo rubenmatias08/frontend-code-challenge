@@ -9,6 +9,9 @@
         <v-btn icon @click="deleteUser(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
+        <v-btn icon @click="deleteUserOrders(item)">
+          <v-icon>mdi-delete-circle</v-icon>
+        </v-btn>
       </template>
     </v-data-table>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -27,6 +30,22 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="orderDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Edit Order</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field v-model="editedOrder.product" label="Product"></v-text-field>
+          <v-text-field v-model="editedOrder.orderDate" label="Order Date" type="date"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeOrderDialog">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="saveOrder">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -35,14 +54,16 @@ export default {
   data() {
     return {
       dialog: false,
+      orderDialog: false,
       users: [],
       editedUser: {},
+      editedOrder: {},
       search: '',
       filteredUsers: [],
       headers: [
+        { text: 'ID', value: 'id', sortable: false, visible: false },
         { text: 'Name', value: 'fullName' },
         { text: 'Email', value: 'email' },
-        { text: 'Orders', value: 'orders' },
         { text: 'Actions', value: 'actions', sortable: false }
       ]
     };
@@ -108,6 +129,52 @@ export default {
         await this.fetchUsers();
       } catch (error) {
         console.error('Error deleting user:', error);
+      }
+    },
+    async deleteUserOrders(user) {
+      try {
+        const response = await fetch(`http://localhost:3333/orders/${user.id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete user orders');
+        }
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error deleting user orders:', error);
+      }
+    },
+    async fetchOrders(user) {
+      try {
+        const response = await fetch(`http://localhost:3333/orders/${user.id}`);
+        this.editedOrder = await response.json();
+        this.orderDialog = true;
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    },
+    closeOrderDialog() {
+      this.orderDialog = false;
+    },
+    async saveOrder() {
+      try {
+        const response = await fetch(`http://localhost:3333/orders/${this.editedOrder.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            product: this.editedOrder.product,
+            orderDate: this.editedOrder.orderDate
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to update order');
+        }
+        this.orderDialog = false;
+        await this.fetchUsers();
+      } catch (error) {
+        console.error('Error updating order:', error);
       }
     }
   }

@@ -1,7 +1,6 @@
 <template>
   <v-container>
-    <v-text-field v-model="search" label="Search Users" append-icon="mdi-magnify" @keyup="filterUsers" />
-    <v-data-table :headers="headers" :items="filteredUsers" item-value="id" class="elevation-1">
+    <v-data-table :headers="headers" :items="users" item-value="id" class="elevation-1">
       <template v-slot:item.actions="{ item }">
         <v-btn icon @click="editUser(item)">
           <v-icon>mdi-pencil</v-icon>
@@ -37,12 +36,10 @@ export default {
       dialog: false,
       users: [],
       editedUser: {},
-      search: '',
-      filteredUsers: [],
       headers: [
+        { text: 'ID', value: 'id' },
         { text: 'Name', value: 'fullName' },
         { text: 'Email', value: 'email' },
-        { text: 'Orders', value: 'orders' },
         { text: 'Actions', value: 'actions', sortable: false }
       ]
     };
@@ -51,22 +48,13 @@ export default {
     this.fetchUsers();
   },
   methods: {
+
     async fetchUsers() {
       try {
         const response = await fetch('http://localhost:3333/users');
         this.users = await response.json();
-        this.filteredUsers = this.users;
       } catch (error) {
         console.error('Error fetching users:', error);
-      }
-    },
-    filterUsers() {
-      if (this.search) {
-        this.filteredUsers = this.users.filter(user =>
-          user.fullName.toLowerCase().includes(this.search.toLowerCase())
-        );
-      } else {
-        this.filteredUsers = this.users;
       }
     },
     editUser(user) {
@@ -88,6 +76,7 @@ export default {
             email: this.editedUser.email
           }),
         });
+
         if (!response.ok) {
           throw new Error('Failed to update user');
         }
