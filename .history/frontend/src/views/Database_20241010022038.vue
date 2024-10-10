@@ -39,6 +39,7 @@
     </v-dialog>
   </v-container>
   <v-divider></v-divider>
+  <v-div>
   <v-container>
     <v-row>
       <v-col>
@@ -72,6 +73,7 @@
       </template>
     </v-data-table>
   </v-container>
+</v-div>
 </template>
 
 <script>

@@ -21,6 +21,7 @@
         </v-btn>
       </template>
     </v-data-table>
+
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -38,7 +39,9 @@
       </v-card>
     </v-dialog>
   </v-container>
+
   <v-divider></v-divider>
+
   <v-container>
     <v-row>
       <v-col>
@@ -56,6 +59,7 @@
         <v-btn @click="searchOrders" color="primary">Search</v-btn>
       </v-col>
     </v-row>
+
     <v-data-table
       :headers="orderTableHeaders"
       :items="orderSearchResults"
@@ -192,18 +196,9 @@ export default {
         console.error('Error deleting user:', error)
       }
     },
-    async updateOrder(order) {
-      try {
-        const response = await fetch(`http://localhost:3333/order/${order.id}/edit`, {
-          method: 'DELETE',
-        })
-        if (!response.ok) {
-          throw new Error('Failed to delete order')
-        }
-        await this.fetchUsers()
-      } catch (error) {
-        console.error('Error deleting order:', error)
-      }
+    editOrder(order) {
+      // Logic for editing an order (this would open a dialog or navigate to an edit form)
+      console.log('Edit order:', order)
     },
     async deleteOrder(order) {
       try {
