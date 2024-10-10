@@ -161,10 +161,10 @@ export default {
               `http://localhost:3333/orders/${this.orderSearchQuery}`
           );
            if (response.status === 204) {
-            this.orderSearchResults = [];
+            this.orderSearchResults = null;
           } else {
             const result = await response.json();
-            this.orderSearchResults = [result];
+            this.orderSearchResults = result;
           }
         } catch (error) {
           console.error("Error fetching orders:", error);

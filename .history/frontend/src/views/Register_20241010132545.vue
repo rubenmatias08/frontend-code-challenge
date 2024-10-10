@@ -79,7 +79,7 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user_id: this.selectedUser, orderDate: new Date(), product: this.product }),
+          body: JSON.stringify({ user_Id: this.selectedUser, orderDate: new Date(), product: this.product }),
         })
         if (response.ok) {
           this.userMessage = 'Successfully registered order'

@@ -13,7 +13,7 @@
       item-value="id"
       class="elevation-1"
       >
-      <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:[item.actions]="{ item }">
         <v-btn icon @click="editUser(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
@@ -61,11 +61,11 @@
     </v-row>
     <v-data-table
     :headers="orderTableHeaders"
-    :items= "orderSearchResults"
+    :items="orderSearchResults ? orderSearchResults : []"
     item-value="id"
     class="elevation-1"
     >
-    <template v-slot:[`item.actions`]="{ item }">
+    <template v-slot:[item.actions]="{ item }">
       <v-btn icon @click="editOrder(item)">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
@@ -158,27 +158,23 @@ export default {
         case "User ID":
         try {
           const response = await fetch(
-              `http://localhost:3333/orders/${this.orderSearchQuery}`
+              http://localhost:3333/orders/${this.orderSearchQuery}
           );
-           if (response.status === 204) {
-            this.orderSearchResults = [];
-          } else {
-            const result = await response.json();
-            this.orderSearchResults = [result];
-          }
+          const result = await response.json();
+          this.orderSearchResults = result;
         } catch (error) {
           console.error("Error fetching orders:", error);
         }
         break;
         case "Order ID":
         try {
-          const response = await fetch(`http://localhost:3333/order/${this.orderSearchQuery}`);
+          const response = await fetch(http://localhost:3333/order/${this.orderSearchQuery});
 
           if (response.status === 204) {
-            this.orderSearchResults = [];
+            this.orderSearchResults = null; // or handle accordingly when there's no content
           } else {
             const result = await response.json();
-            this.orderSearchResults = [result];
+            this.orderSearchResults = result;
           }
         } catch (error) {
           console.error("Error fetching orders:", error);
@@ -197,7 +193,7 @@ export default {
     async updateUser() {
       try {
         const response = await fetch(
-          `http://localhost:3333/user/${this.editedUser.id}/edit`,
+          http://localhost:3333/user/${this.editedUser.id}/edit,
         {
           method: "PUT",
           headers: {
@@ -221,7 +217,7 @@ export default {
     async deleteUser(user) {
       try {
         const response = await fetch(
-          `http://localhost:3333/users/${user.id}`,
+          http://localhost:3333/users/${user.id},
         {
           method: "DELETE",
         }
@@ -241,7 +237,7 @@ export default {
     async updateOrder() {
       try {
         const response = await fetch(
-          `http://localhost:3333/order/${this.editedOrder.id}/edit`,
+          http://localhost:3333/order/${this.editedOrder.id}/edit,
         {
           method: "PUT",
           headers: {
@@ -265,7 +261,7 @@ export default {
     async deleteOrder(order) {
       try {
         const response = await fetch(
-          `http://localhost:3333/orders/${order.id}`,
+          http://localhost:3333/orders/${order.id},
         {
           method: "DELETE",
         }

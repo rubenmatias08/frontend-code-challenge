@@ -61,7 +61,7 @@
     </v-row>
     <v-data-table
     :headers="orderTableHeaders"
-    :items= "orderSearchResults"
+    :items="orderSearchResults ? orderSearchResults : []"
     item-value="id"
     class="elevation-1"
     >
@@ -160,11 +160,11 @@ export default {
           const response = await fetch(
               `http://localhost:3333/orders/${this.orderSearchQuery}`
           );
-           if (response.status === 204) {
-            this.orderSearchResults = [];
+          if (response.status === 204) {
+            this.orderSearchResults = null; // or handle accordingly when there's no content
           } else {
             const result = await response.json();
-            this.orderSearchResults = [result];
+            this.orderSearchResults = result;
           }
         } catch (error) {
           console.error("Error fetching orders:", error);
@@ -175,10 +175,10 @@ export default {
           const response = await fetch(`http://localhost:3333/order/${this.orderSearchQuery}`);
 
           if (response.status === 204) {
-            this.orderSearchResults = [];
+            this.orderSearchResults = null; // or handle accordingly when there's no content
           } else {
             const result = await response.json();
-            this.orderSearchResults = [result];
+            this.orderSearchResults = result;
           }
         } catch (error) {
           console.error("Error fetching orders:", error);
