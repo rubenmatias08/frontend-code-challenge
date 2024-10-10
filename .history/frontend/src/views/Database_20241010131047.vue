@@ -161,7 +161,7 @@ export default {
               `http://localhost:3333/orders/${this.orderSearchQuery}`
             );
             const result = await response.json();
-            this.orderSearchResults = result;
+            this.orderSearchResults = [result];
           } catch (error) {
             console.error("Error fetching orders:", error);
           }
@@ -172,7 +172,7 @@ export default {
               `http://localhost:3333/order/${this.orderSearchQuery}`
             );
             const result = await response.json();
-            this.orderSearchResults = result;
+            this.orderSearchResults = [result];
           } catch (error) {
             console.error("Error fetching orders:", error);
           }
