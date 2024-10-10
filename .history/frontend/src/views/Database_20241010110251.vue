@@ -169,7 +169,7 @@ export default {
         case "Order ID":
           try {
             const response = await fetch(
-              `http://localhost:3333/order/${this.orderSearchQuery}`
+              `http://localhost:3333/orders/${this.orderSearchQuery}`
             );
             const result = await response.json();
             this.orderSearchResults = [result];

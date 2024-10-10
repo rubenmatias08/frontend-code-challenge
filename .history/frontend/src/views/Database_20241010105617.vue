@@ -158,7 +158,7 @@ export default {
         case "User ID":
           try {
             const response = await fetch(
-              `http://localhost:3333/orders/${this.orderSearchQuery}`
+              `http://localhost:3333/order/${this.orderSearchQuery}`
             );
             const result = await response.json();
             this.orderSearchResults = [result];
@@ -258,7 +258,7 @@ export default {
     async deleteOrder(order) {
       try {
         const response = await fetch(
-          `http://localhost:3333/orders/${order.id}`,
+          `http://localhost:3333/order/${order.id}`,
           {
             method: "DELETE",
           }

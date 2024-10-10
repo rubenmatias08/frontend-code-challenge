@@ -227,6 +227,7 @@ export default {
         console.error("Error deleting user:", error);
       }
     },
+
     editOrder(order) {
       this.editedOrder = { ...order };
       this.orderDialog = true;
@@ -257,6 +258,10 @@ export default {
     },
     async deleteOrder(order) {
       try {
+        if (!order.id) {
+          throw new Error("Order ID is missing");
+        }
+
         const response = await fetch(
           `http://localhost:3333/orders/${order.id}`,
           {
@@ -264,8 +269,16 @@ export default {
           }
         );
         if (!response.ok) {
-          throw new Error("Failed to delete order");
+          const errorMessage = await response.text();
+          throw new Error(`Failed to delete order: ${errorMessage}`);
         }
+
+        // Remove a ordem manualmente da lista de resultados
+        this.orderSearchResults = this.orderSearchResults.filter(
+          (o) => o.id !== order.id
+        );
+
+        // Atualiza a lista de pedidos após a exclusão
         await this.searchOrders();
       } catch (error) {
         console.error("Error deleting order:", error);

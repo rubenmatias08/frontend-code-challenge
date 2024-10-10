@@ -74,22 +74,6 @@
           </v-btn>
         </template>
       </v-data-table>
-      <v-dialog v-model="orderDialog" persistent max-width="600px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">Edit Order</span>
-          </v-card-title>
-          <v-card-text>
-            <v-text-field v-model="editedOrder.product" label="Product"></v-text-field>
-            <v-text-field v-model="editedOrder.order_date" label="Order Date"></v-text-field>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeOrderDialog">Cancel</v-btn>
-            <v-btn color="blue darken-1" text @click="updateOrder">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-container>
   </v-container>
 </template>
@@ -99,10 +83,8 @@ export default {
   data() {
     return {
       dialog: false,
-      orderDialog: false,
       users: [],
       editedUser: {},
-      editedOrder: {},
       userTableHeaders: [
         { title: 'User ID', value: 'id' },
         { title: 'Name', value: 'fullName' },
@@ -184,8 +166,10 @@ export default {
     closeDialog() {
       this.dialog = false;
     },
-    closeOrderDialog() {
-      this.orderDialog = false;
+
+    editOrder(item){
+      this.editedOrder = { ...item};
+      this.dialog = true;
     },
     async updateUser() {
       try {
@@ -227,32 +211,20 @@ export default {
         console.error("Error deleting user:", error);
       }
     },
-    editOrder(order) {
-      this.editedOrder = { ...order };
-      this.orderDialog = true;
-    },
-    async updateOrder() {
+    async updateOrder(order) {
       try {
         const response = await fetch(
-          `http://localhost:3333/order/${this.editedOrder.id}/edit`,
+          `http://localhost:3333/order/${order.id}/edit`,
           {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              product: this.editedOrder.product,
-              order_date: this.editedOrder.order_date,
-            }),
+            method: "DELETE",
           }
         );
         if (!response.ok) {
-          throw new Error("Failed to update order");
+          throw new Error("Failed to delete order");
         }
-        this.orderDialog = false;
-        await this.searchOrders();
+        await this.fetchUsers();
       } catch (error) {
-        console.error("Error updating order:", error);
+        console.error("Error deleting order:", error);
       }
     },
     async deleteOrder(order) {
@@ -266,11 +238,12 @@ export default {
         if (!response.ok) {
           throw new Error("Failed to delete order");
         }
-        await this.searchOrders();
+        await this.fetchUsers();
       } catch (error) {
         console.error("Error deleting order:", error);
       }
     },
+    
   },
 };
 </script>

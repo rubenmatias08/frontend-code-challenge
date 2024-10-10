@@ -258,7 +258,7 @@ export default {
     async deleteOrder(order) {
       try {
         const response = await fetch(
-          `http://localhost:3333/orders/${order.id}`,
+          `http://localhost:3333/order/${order.id}`,
           {
             method: "DELETE",
           }

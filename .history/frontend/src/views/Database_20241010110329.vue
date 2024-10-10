@@ -227,6 +227,7 @@ export default {
         console.error("Error deleting user:", error);
       }
     },
+  
     editOrder(order) {
       this.editedOrder = { ...order };
       this.orderDialog = true;
