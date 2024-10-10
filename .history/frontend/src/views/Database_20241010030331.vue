@@ -84,7 +84,7 @@ export default {
     return {
       dialog: false,
       users: [],
-      editedUser: {},
+      editedUser: [],
       userTableHeaders: [
         { title: 'User ID', value: 'id' },
         { title: 'Name', value: 'fullName' },
